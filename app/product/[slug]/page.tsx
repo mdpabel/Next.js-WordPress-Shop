@@ -1,11 +1,21 @@
 import Image from 'next/image';
-import { getProductBySlug } from '@/lib/woocommerce/product';
+import { getProductBySlug, getProducts } from '@/lib/woocommerce/product';
 import { notFound } from 'next/navigation';
 import CartController from '@/components/product/cart-controller';
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
+
+export const dynamic = 'force-static';
+
+export async function generateStaticParams() {
+  const products = await getProducts();
+
+  return products.map((product) => ({
+    slug: product.slug,
+  }));
+}
 
 const ProductDetailsPage = async ({ params }: Props) => {
   const slug = (await params).slug;

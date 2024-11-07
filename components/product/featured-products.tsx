@@ -73,11 +73,12 @@ const ProductCard = ({
 
         {/* Product Image */}
         <div className='flex justify-center items-center h-full'>
-          <img
+          <Image
             src={productImage}
             width={300}
             height={300}
             alt={product.name}
+            priority={true}
             className={cn(
               'w-32 h-32 object-contain transform transition-transform duration-300',
               'group-hover:scale-110',

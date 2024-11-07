@@ -1,12 +1,6 @@
 // AccountPage.tsx
 'use client';
-import React, { useEffect, useState } from 'react';
 import { useAuthStore } from '@/stores/useAuthStore';
-import { toast } from 'react-toastify';
-import { Input } from '@/components/ui/input';
-import FormButton from '@/components/common/form-button';
-import OrdersPage from './orders/page';
-
 const AccountPage = () => {
   const { user } = useAuthStore();
 
