@@ -10,7 +10,7 @@ export default function AccountLayout({
 }) {
   return (
     <div className='bg-black min-h-screen text-neutral-300'>
-      <div className='lg:flex mx-auto px-6 py-8 container'>
+      <div className='lg:flex mx-auto px-6 py-8 p-4 max-w-7xl container'>
         {/* Sidebar Navigation */}
         <Sidebar />
 

@@ -14,8 +14,9 @@ import {
 import useCartStore from '@/stores/useCartStore';
 import { useAuthStore } from '@/stores/useAuthStore';
 import CartDrawer from '../product/cart-drawer';
+import { Category } from '@/types/category';
 
-const SmallScreenNavbar = () => {
+const SmallScreenNavbar = ({ categories }: { categories: Category[] }) => {
   const { toggleCartDrawer, cartItems } = useCartStore();
   const { isAuthenticated } = useAuthStore();
   const cartQuantity = cartItems.reduce((acc, item) => acc + item.quantity, 0);
@@ -59,16 +60,14 @@ const SmallScreenNavbar = () => {
                 className='text-neutral-300 hover:text-neutral-200'>
                 All
               </Link>
-              <Link
-                href='/search/shirts'
-                className='text-neutral-300 hover:text-neutral-200'>
-                Shirts
-              </Link>
-              <Link
-                href='/search/stickers'
-                className='text-neutral-300 hover:text-neutral-200'>
-                Stickers
-              </Link>
+              {categories.map((category) => (
+                <Link
+                  href={`/search/${category.slug}`}
+                  key={category.id}
+                  className='text-neutral-300 hover:text-neutral-200'>
+                  {category.name}
+                </Link>
+              ))}
             </nav>
           </div>
         </SheetContent>

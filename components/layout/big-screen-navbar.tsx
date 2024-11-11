@@ -10,8 +10,9 @@ import { Input } from '../ui/input';
 import useCartStore from '@/stores/useCartStore';
 import { useAuthStore } from '@/stores/useAuthStore';
 import CartDrawer from '../product/cart-drawer';
+import { Category } from '@/types/category';
 
-const BigScreenNavbar = () => {
+const BigScreenNavbar = ({ categories }: { categories: Category[] }) => {
   const { cartItems, toggleCartDrawer } = useCartStore();
   const { isAuthenticated } = useAuthStore();
   const cartQuantity = cartItems.reduce((acc, item) => acc + item.quantity, 0);
@@ -35,20 +36,15 @@ const BigScreenNavbar = () => {
               All
             </Link>
           </li>
-          <li>
-            <Link
-              href='/search/shirts'
-              className='text-base text-neutral-300 hover:text-neutral-200 hover:underline'>
-              Shirts
-            </Link>
-          </li>
-          <li>
-            <Link
-              href='/search/computers'
-              className='text-base text-neutral-300 hover:text-neutral-200 hover:underline'>
-              Computers
-            </Link>
-          </li>
+          {categories.map((category) => (
+            <li key={category.id}>
+              <Link
+                href={`/search/${category.slug}`}
+                className='text-base text-neutral-300 hover:text-neutral-200 hover:underline'>
+                {category.name}
+              </Link>
+            </li>
+          ))}
         </ul>
       </div>
 
