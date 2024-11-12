@@ -12,6 +12,7 @@ import { useAuthStore } from '@/stores/useAuthStore';
 import CartDrawer from '../product/cart-drawer';
 import { Category } from '@/types/category';
 import Search from './search';
+import { Suspense } from 'react';
 
 const BigScreenNavbar = ({ categories }: { categories: Category[] }) => {
   const { cartItems, toggleCartDrawer } = useCartStore();
@@ -48,10 +49,10 @@ const BigScreenNavbar = ({ categories }: { categories: Category[] }) => {
           ))}
         </ul>
       </div>
-
-      {/* Second Column: Search Input */}
-      <Search />
-
+      {/* Second Column: Search Input */}M
+      <Suspense fallback='loading...'>
+        <Search />
+      </Suspense>
       {/* Third Column: Cart Icon and User Dashboard */}
       <div className='flex justify-end items-center space-x-6 md:w-1/3'>
         {/* User Dashboard Link */}
@@ -86,7 +87,6 @@ const BigScreenNavbar = ({ categories }: { categories: Category[] }) => {
           )}
         </button>
       </div>
-
       {/* Cart Drawer */}
       <CartDrawer />
     </div>

@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import { Category } from '@/types/category'; // Assuming the types are already defined
 import {
   Accordion,
@@ -53,7 +53,9 @@ const StoreSidebarClient: React.FC<StoreSidebarClientProps> = ({
         <h2 className='mb-2 font-semibold text-lg text-teal-600'>
           Search Products
         </h2>
-        <Search className='md:w-full' />
+        <Suspense fallback='loading...'>
+          <Search className='md:w-full' />
+        </Suspense>
       </section>
 
       {/* Category Filters - Accordion for mobile */}

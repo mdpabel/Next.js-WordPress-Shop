@@ -16,6 +16,7 @@ import { useAuthStore } from '@/stores/useAuthStore';
 import CartDrawer from '../product/cart-drawer';
 import { Category } from '@/types/category';
 import Search from './search';
+import { Suspense } from 'react';
 
 const SmallScreenNavbar = ({ categories }: { categories: Category[] }) => {
   const { toggleCartDrawer, cartItems } = useCartStore();
@@ -43,7 +44,9 @@ const SmallScreenNavbar = ({ categories }: { categories: Category[] }) => {
             <SheetTitle className='text-neutral-200'>Menu</SheetTitle>
             <SheetDescription>
               <div className='relative mt-4 px-4 w-full'>
-                <Search />
+                <Suspense fallback='loading...'>
+                  <Search />
+                </Suspense>
               </div>
             </SheetDescription>
           </SheetHeader>
