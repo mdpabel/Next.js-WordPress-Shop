@@ -7,6 +7,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import Link from 'next/link';
 
 type StoreSidebarClientProps = {
   categories: Category[];
@@ -65,9 +66,11 @@ const StoreSidebarClient: React.FC<StoreSidebarClientProps> = ({
                 <ul className='space-y-4'>
                   {categories.map((category) => (
                     <li key={category.id} className='text-neutral-300'>
-                      <button className='w-full text-left hover:text-teal-600'>
+                      <Link
+                        href={`/search/${category.slug}`}
+                        className='w-full text-left hover:text-teal-600'>
                         {category.name}
-                      </button>
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -80,9 +83,11 @@ const StoreSidebarClient: React.FC<StoreSidebarClientProps> = ({
         <ul className='lg:block space-y-4 hidden'>
           {categories.map((category) => (
             <li key={category.id} className='text-neutral-300'>
-              <button className='w-full text-left hover:text-teal-600'>
+              <Link
+                href={`/search/${category.slug}`}
+                className='w-full text-left hover:text-teal-600'>
                 {category.name}
-              </button>
+              </Link>
             </li>
           ))}
         </ul>

@@ -1,28 +1,29 @@
 import { WooProduct } from '@/types/woo-product';
 import WooCommerce from '.';
 import { cache } from 'react';
+import { ProductFilters } from '@/types/product-filter';
 
-// Define Product Type
-export type Product = {
-  id: number;
-  name: string;
-  price: string;
-  description: string;
-  images: { src: string; alt: string }[];
-};
+// Utility function to get products with optional filters
+export const getProducts = cache(
+  async (filters: ProductFilters = {}): Promise<WooProduct[]> => {
+    try {
+      // Setup default query parameters
+      const params: ProductFilters = {
+        per_page: 20, // Number of products to fetch per page
+        ...filters, // Merge provided filters with default params
+      };
 
-// Utility function to get all products
-export const getProducts = cache(async (): Promise<WooProduct[]> => {
-  try {
-    const response = await WooCommerce.get('products', {
-      per_page: 20, // Number of products to fetch per page
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching products:', error);
-    throw new Error('Failed to fetch products');
-  }
-});
+      // Fetch products from WooCommerce with the applied filters
+      const response = await WooCommerce.get('products', { params });
+
+      // Return the products data
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      throw new Error('Failed to fetch products');
+    }
+  },
+);
 
 // Utility function to get a single product by ID
 export const getProductById = cache(

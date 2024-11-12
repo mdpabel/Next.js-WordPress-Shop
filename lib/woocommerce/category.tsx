@@ -1,7 +1,8 @@
 import { Category } from '@/types/category';
 import WooCommerce from '.';
+import { cache } from 'react';
 
-export const getCategories = async (): Promise<Category[]> => {
+export const getCategories = cache(async (): Promise<Category[]> => {
   try {
     const response = await WooCommerce.get('products/categories');
 
@@ -27,4 +28,21 @@ export const getCategories = async (): Promise<Category[]> => {
     console.error('Error fetching categories:', error);
     return [];
   }
-};
+});
+
+export const getCategoryBySlug = cache(async (slug: string) => {
+  try {
+    const response = await WooCommerce.get('products/categories', {
+      slug,
+    });
+
+    if (response.data.length === 0) {
+      return null; // No category found for the slug
+    }
+
+    return response.data[0].id; // Return the first matching category
+  } catch (error) {
+    console.error('Error fetching category by slug:', error);
+    return null;
+  }
+});
