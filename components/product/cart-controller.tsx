@@ -1,36 +1,44 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useCartStore from '@/stores/useCartStore';
 import { WooProduct } from '@/types/woo-product';
 import { Button } from '../ui/button';
 
 const CartController = ({ product }: { product: WooProduct }) => {
   const [quantity, setQuantity] = useState(1);
-  const { addItem, toggleCartDrawer } = useCartStore();
+  const { addItem, toggleCartDrawer, updateQuantity, cartItems } =
+    useCartStore();
 
-  // Handle form submission
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault(); // Prevent the form from reloading the page
+  // Find the item from the cart if it exists to use the current quantity
+  const cartItem = cartItems.find((item) => item.id === product.id);
 
-    // Add item to the cart
-    addItem({
-      id: product.id,
-      quantity,
-      name: product.name,
-      price: parseFloat(product.price),
-    });
-
-    toggleCartDrawer(true);
-  };
+  useEffect(() => {
+    if (cartItem) {
+      // Sync the quantity from cart store to ensure consistency with local storage
+      setQuantity(cartItem.quantity);
+    }
+  }, [cartItem]);
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form
+      action={() => {
+        addItem({
+          id: product.id,
+          name: product.name,
+          price: parseFloat(product.price),
+          quantity,
+        });
+
+        toggleCartDrawer(true);
+      }}>
       <div className='flex items-center space-x-4'>
         {/* Quantity Controller */}
         <div className='flex items-center'>
           <button
             type='button'
-            onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}
+            onClick={() => {
+              setQuantity(quantity > 1 ? quantity - 1 : 1);
+            }}
             className='bg-neutral-700 px-3 py-1 rounded-l-md text-white'>
             -
           </button>
@@ -39,7 +47,9 @@ const CartController = ({ product }: { product: WooProduct }) => {
           </span>
           <button
             type='button'
-            onClick={() => setQuantity(quantity + 1)}
+            onClick={() => {
+              setQuantity(quantity + 1);
+            }}
             className='bg-neutral-700 px-3 py-1 rounded-r-md text-white'>
             +
           </button>
