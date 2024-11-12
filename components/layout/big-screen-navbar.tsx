@@ -11,6 +11,7 @@ import useCartStore from '@/stores/useCartStore';
 import { useAuthStore } from '@/stores/useAuthStore';
 import CartDrawer from '../product/cart-drawer';
 import { Category } from '@/types/category';
+import Search from './search';
 
 const BigScreenNavbar = ({ categories }: { categories: Category[] }) => {
   const { cartItems, toggleCartDrawer } = useCartStore();
@@ -49,18 +50,7 @@ const BigScreenNavbar = ({ categories }: { categories: Category[] }) => {
       </div>
 
       {/* Second Column: Search Input */}
-      <div className='flex justify-center md:w-1/3'>
-        <form className='relative w-full lg:w-80 xl:w-full'>
-          <Input
-            type='text'
-            placeholder='Search for products...'
-            className='bg-transparent px-4 py-2 border rounded-lg w-full text-md text-neutral-300 md:text-sm placeholder:text-neutral-500'
-          />
-          <div className='top-1/2 right-3 absolute -translate-y-1/2'>
-            <FiSearch className='w-5 h-5 text-neutral-300' />
-          </div>
-        </form>
-      </div>
+      <Search />
 
       {/* Third Column: Cart Icon and User Dashboard */}
       <div className='flex justify-end items-center space-x-6 md:w-1/3'>

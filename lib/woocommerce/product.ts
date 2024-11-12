@@ -14,7 +14,13 @@ export const getProducts = cache(
       };
 
       // Fetch products from WooCommerce with the applied filters
-      const response = await WooCommerce.get('products', { params });
+      const response = await WooCommerce.get('products', {
+        per_page: params.per_page,
+        category: params.category,
+        search: params.search,
+        min_price: params.min_price,
+        max_price: params.max_price,
+      });
 
       // Return the products data
       return response.data;

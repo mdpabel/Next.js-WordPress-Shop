@@ -15,6 +15,7 @@ import useCartStore from '@/stores/useCartStore';
 import { useAuthStore } from '@/stores/useAuthStore';
 import CartDrawer from '../product/cart-drawer';
 import { Category } from '@/types/category';
+import Search from './search';
 
 const SmallScreenNavbar = ({ categories }: { categories: Category[] }) => {
   const { toggleCartDrawer, cartItems } = useCartStore();
@@ -41,16 +42,9 @@ const SmallScreenNavbar = ({ categories }: { categories: Category[] }) => {
           <SheetHeader>
             <SheetTitle className='text-neutral-200'>Menu</SheetTitle>
             <SheetDescription>
-              <form className='relative mt-4 px-4 w-full'>
-                <Input
-                  type='text'
-                  placeholder='Search for products...'
-                  className='bg-transparent px-4 py-2 border rounded-lg w-full text-md text-neutral-300 placeholder:text-neutral-500'
-                />
-                <div className='top-1/2 right-4 absolute -translate-y-1/2'>
-                  <FiSearch className='mr-2 w-5 h-5 text-neutral-300' />
-                </div>
-              </form>
+              <div className='relative mt-4 px-4 w-full'>
+                <Search />
+              </div>
             </SheetDescription>
           </SheetHeader>
           <div className='px-4'>

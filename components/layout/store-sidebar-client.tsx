@@ -8,6 +8,9 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import Link from 'next/link';
+import Search from './search';
+import { useSearch } from '@/hooks/useSearch';
+import Spinner from '../common/spinner';
 
 type StoreSidebarClientProps = {
   categories: Category[];
@@ -17,7 +20,6 @@ const StoreSidebarClient: React.FC<StoreSidebarClientProps> = ({
   categories,
 }) => {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
-  const [searchQuery, setSearchQuery] = useState('');
 
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -28,13 +30,20 @@ const StoreSidebarClient: React.FC<StoreSidebarClientProps> = ({
     }
   };
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-  };
+  const { isPending: minPricePending, label: minLabel } = useSearch({
+    label: 'min-price',
+    text: priceRange[0].toString(),
+    condition: priceRange[0] > 0,
+  });
+
+  const { isPending: maxPricePending, label: maxLabel } = useSearch({
+    label: 'max-price',
+    text: priceRange[1].toString(),
+    condition: priceRange[1] < 1000,
+  });
 
   const handleClearFilters = () => {
     setPriceRange([0, 1000]);
-    setSearchQuery('');
   };
 
   return (
@@ -44,13 +53,7 @@ const StoreSidebarClient: React.FC<StoreSidebarClientProps> = ({
         <h2 className='mb-2 font-semibold text-lg text-teal-600'>
           Search Products
         </h2>
-        <input
-          type='text'
-          value={searchQuery}
-          onChange={handleSearchChange}
-          placeholder='Search...'
-          className='bg-neutral-800 p-2 rounded-lg w-full text-neutral-200'
-        />
+        <Search className='md:w-full' />
       </section>
 
       {/* Category Filters - Accordion for mobile */}
@@ -64,6 +67,13 @@ const StoreSidebarClient: React.FC<StoreSidebarClientProps> = ({
               </AccordionTrigger>
               <AccordionContent>
                 <ul className='space-y-4'>
+                  <li className='text-neutral-300'>
+                    <Link
+                      href={`/search`}
+                      className='w-full text-left hover:text-teal-600'>
+                      All
+                    </Link>
+                  </li>
                   {categories.map((category) => (
                     <li key={category.id} className='text-neutral-300'>
                       <Link
@@ -81,11 +91,18 @@ const StoreSidebarClient: React.FC<StoreSidebarClientProps> = ({
 
         {/* Desktop Category List */}
         <ul className='lg:block space-y-4 hidden'>
+          <li className='w-full text-neutral-300'>
+            <Link
+              href={`/search`}
+              className='block w-full text-left hover:text-teal-600'>
+              All
+            </Link>
+          </li>
           {categories.map((category) => (
-            <li key={category.id} className='text-neutral-300'>
+            <li key={category.id} className='w-full text-neutral-300'>
               <Link
                 href={`/search/${category.slug}`}
-                className='w-full text-left hover:text-teal-600'>
+                className='block w-full text-left hover:text-teal-600'>
                 {category.name}
               </Link>
             </li>
@@ -95,8 +112,12 @@ const StoreSidebarClient: React.FC<StoreSidebarClientProps> = ({
 
       {/* Price Range Filter - Accordion for mobile */}
       <section className='mb-6'>
-        <h2 className='mb-2 font-semibold text-lg text-teal-600'>
-          Price Range
+        <h2 className='flex items-center gap-2 mb-2 font-semibold text-lg text-teal-600'>
+          Price Range{' '}
+          {((minPricePending && minLabel === 'min-price') ||
+            (maxPricePending && maxLabel === 'max-price')) && (
+            <Spinner className='w-5 h-5 text-neutral-300' />
+          )}
         </h2>
         <div className='block lg:hidden'>
           <Accordion type='single' collapsible>
