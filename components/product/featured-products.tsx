@@ -23,22 +23,6 @@ const FeaturedProducts = async () => {
           </div>
         ))}
       </div>
-
-      {/* Second Row - 3 Products */}
-      <div className='flex gap-4 mt-4'>
-        {products.slice(3, 6).map((product) => (
-          <div key={product.id} className='flex-1'>
-            <ProductCard product={product} />
-          </div>
-        ))}
-      </div>
-
-      {/* Other Rows - 3 Products per row */}
-      <div className='gap-4 grid grid-cols-1 md:grid-cols-3 mt-4'>
-        {products.slice(6).map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
     </div>
   );
 };
